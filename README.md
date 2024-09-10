@@ -1,66 +1,69 @@
-## Foundry
+# SETTLER - Ethereum Settlers
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+- [1. Overview](#1-overview)
+- [2. Clone repository](#2-clone-repository)
+  - [2.1. Install Dependencies](#21-install-dependencies)
+  - [2.2. Create the `.env` file](#22-create-the-env-file)
+- [3. Testing](#3-testing)
+  - [3.1. Tests (Fork)](#31-tests-fork)
+  - [3.2. Coverage (Fork)](#32-coverage-fork)
+- [4. Deployment](#4-deployment)
+- [5. License](#5-license)
 
-Foundry consists of:
+## 1. Overview
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+An ERC20 token called `Ethereum Settler` (SETTLER) and an ERC721 NFT token called `Ethereum Settlement` (SETTLEMENT).
 
-## Documentation
+Holding the SETTLEMENT NFT earns the holder newly minted SETTLER tokens every second.
 
-https://book.getfoundry.sh/
+## 2. Clone repository
 
-## Usage
-
-### Build
-
-```shell
-$ forge build
+```bash
+git clone https://github.com/EridianAlpha/foundry-template.git
 ```
 
-### Test
+### 2.1. Install Dependencies
 
-```shell
-$ forge test
+This should happen automatically when first running a command, but the installation can be manually triggered with the following commands:
+
+```bash
+git submodule init
+git submodule update
+make install
 ```
 
-### Format
+### 2.2. Create the `.env` file
 
-```shell
-$ forge fmt
+Use the `.env.example` file as a template to create a `.env` file.
+
+## 3. Testing
+
+### 3.1. Tests (Fork)
+
+```bash
+make test
+make test-v
+make test-summary
 ```
 
-### Gas Snapshots
+### 3.2. Coverage (Fork)
 
-```shell
-$ forge snapshot
+```bash
+make coverage
+make coverage-report
 ```
 
-### Anvil
+## 4. Deployment
 
-```shell
-$ anvil
-```
+Deploys SimpleSwap and all modules to the Anvil chain specified in the `.env` file.
 
-### Deploy
+| Chain        | Command                    |
+| ------------ | -------------------------- |
+| Anvil        | `make deploy anvil`        |
+| Holesky      | `make deploy holesky`      |
+| Base Sepolia | `make deploy base-sepolia` |
+| Base Mainnet | `make deploy base-mainnet` |
 
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
+## 5. License
 
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+[MIT](https://choosealicense.com/licenses/mit/)
