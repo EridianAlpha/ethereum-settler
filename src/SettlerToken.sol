@@ -50,12 +50,12 @@ contract SettlerToken is ERC20, ERC20Permit {
         view
         returns (uint256 nftId, uint256 totalLifetimeTokensFromNft, uint256 newTokensToMint)
     {
-        nftId = SETTLEMENT_NFT.ownerToId(account);
+        nftId = SETTLEMENT_NFT.s_ownerToId(account);
 
         uint256 mintedLifetimeTokens = s_mintedTokensFromNft[nftId];
-        uint256 mintTimestamp = SETTLEMENT_NFT.mintTimestamp(nftId);
+        uint256 s_mintTimestamp = SETTLEMENT_NFT.s_mintTimestamp(nftId);
 
-        totalLifetimeTokensFromNft = _totalLifetimeTokensFromNft(mintTimestamp);
+        totalLifetimeTokensFromNft = _totalLifetimeTokensFromNft(s_mintTimestamp);
         newTokensToMint = totalLifetimeTokensFromNft - mintedLifetimeTokens;
     }
 

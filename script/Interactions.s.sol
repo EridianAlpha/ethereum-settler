@@ -31,7 +31,7 @@ contract Interactions is GetDeployedContract {
 
     function interactionsSetup() public {
         settlementNft = SettlementNft(payable(getDeployedContract("SettlementNft")));
-        settlerToken = settlementNft.i_settlerToken();
+        settlerToken = settlementNft.SETTLER_TOKEN();
     }
 
     function mintNft() public {
@@ -43,7 +43,7 @@ contract Interactions is GetDeployedContract {
 
     function getMintTimestamp(uint256 tokenId) public returns (uint256) {
         interactionsSetup();
-        return settlementNft.mintTimestamp(tokenId);
+        return settlementNft.s_mintTimestamp(tokenId);
     }
 
     function getSettlerBalance(address account) public returns (uint256) {

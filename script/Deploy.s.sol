@@ -11,7 +11,7 @@ contract Deploy is Script {
 
         vm.startBroadcast(msg.sender);
         deployedSettlementNftAddress = address(new SettlementNft(baseImageUri));
-        deployedSettlerTokenAddress = address(SettlementNft(deployedSettlementNftAddress).i_settlerToken());
+        deployedSettlerTokenAddress = address(SettlementNft(deployedSettlementNftAddress).SETTLER_TOKEN());
         vm.stopBroadcast();
     }
 }
