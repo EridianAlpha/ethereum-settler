@@ -7,12 +7,12 @@ import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
 import {SettlementNft} from "./SettlementNft.sol";
 
 contract SettlerToken is ERC20, ERC20Permit {
-    uint256 public constant s_tokenEmissionRate = 1e18; // Tokens per second
-    SettlementNft public immutable i_settlementNft;
+    uint256 public constant TOKEN_EMISSION_RATE = 1e18; // Tokens per second
+    SettlementNft public immutable SETTLEMENT_NFT;
     mapping(uint256 => uint256) public s_mintedTokensFromNft;
 
     constructor(address _nftAddress) ERC20("Ethereum Settler", "SETTLER") ERC20Permit("Ethereum Settler") {
-        i_settlementNft = SettlementNft(_nftAddress);
+        SETTLEMENT_NFT = SettlementNft(_nftAddress);
     }
 
     // Useful when NFT is transferred as this function can be called before the NFT is transferred,
@@ -25,7 +25,7 @@ contract SettlerToken is ERC20, ERC20Permit {
 
     function balanceOf(address account) public view override returns (uint256 accountBalance) {
         // If the account has an NFT, calculate the unminted balance based on the time since the NFT was minted
-        if (i_settlementNft.balanceOf(account) > 0) {
+        if (SETTLEMENT_NFT.balanceOf(account) > 0) {
             (,, uint256 unmintedTokensFromNft) = _calculateNewTokensToMint(account);
             accountBalance = super.balanceOf(account) + unmintedTokensFromNft;
         } else {
@@ -35,14 +35,14 @@ contract SettlerToken is ERC20, ERC20Permit {
 
     function _update(address from, address to, uint256 value) internal override {
         // If the account has an NFT, mint any outstanding tokens based on the time since the NFT was minted
-        if (from != address(0) && i_settlementNft.balanceOf(from) > 0) {
+        if (from != address(0) && SETTLEMENT_NFT.balanceOf(from) > 0) {
             _mintOutstandingTokensFromNft(from);
         }
         super._update(from, to, value);
     }
 
     function _totalLifetimeTokensFromNft(uint256 _mintTimestamp) internal view returns (uint256) {
-        return (block.timestamp - _mintTimestamp) * s_tokenEmissionRate;
+        return (block.timestamp - _mintTimestamp) * TOKEN_EMISSION_RATE;
     }
 
     function _calculateNewTokensToMint(address account)
@@ -50,10 +50,10 @@ contract SettlerToken is ERC20, ERC20Permit {
         view
         returns (uint256 nftId, uint256 totalLifetimeTokensFromNft, uint256 newTokensToMint)
     {
-        nftId = i_settlementNft.ownerToId(account);
+        nftId = SETTLEMENT_NFT.ownerToId(account);
 
         uint256 mintedLifetimeTokens = s_mintedTokensFromNft[nftId];
-        uint256 mintTimestamp = i_settlementNft.mintTimestamp(nftId);
+        uint256 mintTimestamp = SETTLEMENT_NFT.mintTimestamp(nftId);
 
         totalLifetimeTokensFromNft = _totalLifetimeTokensFromNft(mintTimestamp);
         newTokensToMint = totalLifetimeTokensFromNft - mintedLifetimeTokens;
