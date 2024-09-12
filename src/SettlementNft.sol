@@ -78,7 +78,7 @@ contract SettlementNft is ERC721 {
     function _generateSvg(uint256 tokenId) internal view returns (string memory svg) {
         string memory tokenIdString = Strings.toString(tokenId);
 
-        // Create the custom SVG with the timestamp as an overlay
+        // Create the composite SVG with the settlement ID and days since mint as an overlay
         svg = string(
             abi.encodePacked(
                 '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 350 350">',
@@ -93,7 +93,7 @@ contract SettlementNft is ERC721 {
     }
 
     function _generateSettlementRectangle(string memory tokenIdString) internal pure returns (string memory) {
-        uint256 settlementNumberXWidth = 55 + ((bytes(tokenIdString).length) * 5);
+        uint256 settlementNumberXWidth = 52 + ((bytes(tokenIdString).length) * 5);
 
         return string(
             abi.encodePacked(
@@ -102,7 +102,7 @@ contract SettlementNft is ERC721 {
                 '%" y="30%" rx="20" ry="20" width="',
                 Strings.toString(settlementNumberXWidth),
                 '%" height="38" fill="#201649" />',
-                '<text x="50%" y="36%" dominant-baseline="middle" text-anchor="middle" font-size="24" font-weight="bold" font-family="monospace" fill="white">',
+                '<text x="50%" y="36%" dominant-baseline="middle" text-anchor="middle" font-size="22" font-weight="bold" font-family="monospace" fill="white">',
                 "Settlement #",
                 tokenIdString,
                 "</text>"
@@ -111,7 +111,7 @@ contract SettlementNft is ERC721 {
     }
 
     function _generateDaysSinceMintRectangle(uint256 tokenId) internal view returns (string memory) {
-        uint256 daysSinceMint = ((block.timestamp + (60 * 60 * 24 * 1234)) - s_mintTimestamp[tokenId]) / (60 * 60 * 24);
+        uint256 daysSinceMint = ((block.timestamp + (60 * 60 * 24)) - s_mintTimestamp[tokenId]) / (60 * 60 * 24);
         uint256 daysSinceMintXWidth = 22 + ((bytes(Strings.toString(daysSinceMint)).length) * 5);
 
         return string(
@@ -121,7 +121,7 @@ contract SettlementNft is ERC721 {
                 '%" y="42%" rx="20" ry="20" width="',
                 Strings.toString(daysSinceMintXWidth),
                 '%" height="38" fill="#201649" />',
-                '<text x="50%" y="48%" dominant-baseline="middle" text-anchor="middle" font-size="24" font-weight="bold" font-family="monospace" fill="white">',
+                '<text x="50%" y="48%" dominant-baseline="middle" text-anchor="middle" font-size="22" font-weight="bold" font-family="monospace" fill="white">',
                 Strings.toString(daysSinceMint > 1 ? daysSinceMint : 1),
                 daysSinceMint > 1 ? " days" : " day",
                 "</text>"
