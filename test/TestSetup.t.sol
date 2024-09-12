@@ -5,8 +5,8 @@ import {Test, console} from "forge-std/Test.sol";
 
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-import {SettlerToken} from "src/SettlerToken.sol";
 import {SettlementNft} from "src/SettlementNft.sol";
+import {SettlerToken} from "src/SettlerToken.sol";
 
 import {Deploy} from "script/Deploy.s.sol";
 
@@ -14,8 +14,8 @@ contract SettlerTestSetup is Test {
     // Added to remove this whole testing file from coverage report.
     function test() public {}
 
-    address settlementNftAddress;
-    address settlerTokenAddress;
+    SettlementNft settlementNft;
+    SettlerToken settlerToken;
 
     // Setup testing constants
     uint256 internal constant GAS_PRICE = 1;
@@ -30,7 +30,10 @@ contract SettlerTestSetup is Test {
     function setUp() external {
         // Deploy standard contract and internal functions helper contract
         Deploy deploy = new Deploy();
-        (settlementNftAddress, settlerTokenAddress) = deploy.run();
+        (address settlementNftAddress, address settlerTokenAddress) = deploy.run();
+
+        settlementNft = SettlementNft(settlementNftAddress);
+        settlerToken = SettlerToken(settlerTokenAddress);
 
         // Give all the users some starting balance
         vm.deal(user1, STARTING_BALANCE);
