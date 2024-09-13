@@ -128,4 +128,9 @@ contract SettlementNft is ERC721 {
             )
         );
     }
+
+    // Getters
+    function getOwnerToId(address owner) external view returns (uint256) {
+        return s_ownerToId[owner];
+    }
 }
