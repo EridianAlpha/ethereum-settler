@@ -34,6 +34,17 @@ holesky-network:
 						--etherscan-api-key ${ETHERSCAN_API_KEY} \
 	)
 
+mainnet: # Added to stop error output when running commands e.g. make deploy mainnet
+	@echo
+mainnet-network:
+	$(eval \
+		NETWORK_ARGS := --broadcast \
+						--rpc-url ${MAINNET_RPC_URL} \
+						--private-key ${MAINNET_PRIVATE_KEY} \
+						--verify \
+						--etherscan-api-key ${ETHERSCAN_API_KEY} \
+	)
+
 base-sepolia: # Added to stop error output when running commands e.g. make deploy base-sepolia
 	@echo
 base-sepolia-network: 
