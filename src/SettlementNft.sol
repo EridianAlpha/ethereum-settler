@@ -1,43 +1,82 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.27;
 
+// ================================================================
+// │                           IMPORTS                            │
+// ================================================================
+
+// OpenZeppelin Imports
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/base64.sol";
 
+// Contract Imports
 import {SettlerToken} from "./SettlerToken.sol";
 
+// ================================================================
+// │                    SETTLEMENT NFT CONTRACT                   │
+// ================================================================
+
+/// @title AavePM - Ethereum Settlers NFT
+/// @author EridianAlpha
+/// @notice An ERC721 NFT token called `Ethereum Settlement` (SETTLEMENT).
 contract SettlementNft is ERC721 {
-    // Errors
+    // ================================================================
+    // │                            ERRORS                            │
+    // ================================================================
+
     error SettlementNft_SingleActivePerAddress();
 
-    // State variables
+    // ================================================================
+    // │                        STATE VARIABLES                       │
+    // ================================================================
+
+    // Constant and immutable variables
     SettlerToken public immutable SETTLER_TOKEN;
     string public BASE_IMAGE_URI;
-    uint256 public nextTokenId = 1; // Start token IDs at 1
-    mapping(uint256 => uint256) public s_mintTimestamp;
-    mapping(address => uint256) public s_ownerToId;
 
+    // Mutable variables
+    uint256 public nextTokenId = 1; // Start token IDs at 1
+
+    // Mappings
+    mapping(uint256 => uint256) internal s_mintTimestamp;
+    mapping(address => uint256) internal s_ownerToId;
+
+    /// @notice Constructor to initialize the contract with a base image URI and deploy the SettlerToken contract.
+    /// @param _baseImageUri The base URI for the NFT image.
     constructor(string memory _baseImageUri) ERC721("Ethereum Settlement", "SETTLEMENT") {
         BASE_IMAGE_URI = _baseImageUri;
-
-        // Deploy the SETTLER ERC20 token
         SETTLER_TOKEN = new SettlerToken(address(this));
     }
 
-    function _update(address to, uint256 tokenId, address auth) internal override returns (address) {
+    /// @notice Override standard ERC721 update function.
+    /// @dev Mints outstanding SETTLER tokens.
+    ///      Check only 1 active NFT per address.
+    /// @param to The address to transfer the NFT to.
+    /// @param tokenId The ID of the NFT.
+    /// @param auth The address that is authorized to transfer the NFT.
+    /// @return previousOwner The previous owner of the NFT.
+    function _update(address to, uint256 tokenId, address auth) internal override returns (address previousOwner) {
+        // Check if the NFT has already been minted
+        if (tokenId != nextTokenId) {
+            // Get the previous owner of the NFT
+            address from = ownerOf(tokenId);
+
+            // Mint any outstanding tokens for the previous owner
+            SETTLER_TOKEN.mintOutstandingTokensFromNft(from);
+
+            // Update the s_ownerToId mapping
+            s_ownerToId[from] = 0;
+            s_ownerToId[to] = tokenId;
+        }
+
+        // Call the parent _update function
+        previousOwner = super._update(to, tokenId, auth);
+
+        require
+
         // Only allow one active NFT per address at a time
-        require(balanceOf(msg.sender) == 0, SettlementNft_SingleActivePerAddress());
-
-        // Mint any outstanding SETTLER tokens from the SettlerToken contract
-        SETTLER_TOKEN.mintOutstandingTokensFromNft(msg.sender);
-
-        // Update the s_ownerToId mapping
-        s_ownerToId[msg.sender] = 0;
-        s_ownerToId[to] = tokenId;
-
-        // TODO: Which address is returned?
-        return super._update(to, tokenId, auth);
+        require(balanceOf(to) <= 1, SettlementNft_SingleActivePerAddress());
     }
 
     function mint() external {
@@ -132,5 +171,9 @@ contract SettlementNft is ERC721 {
     // Getters
     function getOwnerToId(address owner) external view returns (uint256) {
         return s_ownerToId[owner];
+    }
+
+    function getMintTimestamp(uint256 tokenId) external view returns (uint256) {
+        return s_mintTimestamp[tokenId];
     }
 }
