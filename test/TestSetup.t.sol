@@ -21,6 +21,8 @@ contract SettlerTestSetup is Test {
     uint256 internal constant GAS_PRICE = 1;
     uint256 internal constant STARTING_BALANCE = 10 ether;
     uint256 internal constant SEND_VALUE = 1 ether;
+    uint256 internal constant BLOCK_PERIOD = 12;
+    uint256 internal constant BLOCK_NUMBER_INCREASE = 1;
 
     // Create users
     address defaultFoundryCaller = address(uint160(uint256(keccak256("foundry default caller"))));
