@@ -17,6 +17,10 @@ jobs:
       - name: Install Foundry
         uses: foundry-rs/foundry-toolchain@v1
 
+      - name: List Tags for forge-std
+        run: |
+          git ls-remote --tags https://github.com/foundry-rs/forge-std
+
       - name: Install Dependencies
         run: git submodule init; git submodule update; make install
 
