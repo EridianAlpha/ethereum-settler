@@ -15,11 +15,7 @@ jobs:
           submodules: recursive
 
       - name: Install Foundry
-        uses: foundry-rs/foundry-toolchain@v1
-
-      - name: Update Foundry
-        run: |
-          foundryup
+        run: curl -L https://foundry.paradigm.xyz | bash
 
       - name: Install Dependencies
         run: git submodule init; git submodule update; make install
