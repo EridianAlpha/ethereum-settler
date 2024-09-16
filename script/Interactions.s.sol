@@ -43,7 +43,7 @@ contract Interactions is GetDeployedContract {
 
     function getMintTimestamp(uint256 tokenId) public returns (uint256) {
         interactionsSetup();
-        return settlementNft.s_mintTimestamp(tokenId);
+        return settlementNft.getMintTimestamp(tokenId);
     }
 
     function getSettlerBalance(address account) public returns (uint256) {

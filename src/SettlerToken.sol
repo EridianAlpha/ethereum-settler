@@ -1,14 +1,34 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.27;
 
+// ================================================================
+// │                           IMPORTS                            │
+// ================================================================
+
+// OpenZeppelin Imports
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
 
+// Contract Imports
 import {SettlementNft} from "./SettlementNft.sol";
 
+// ================================================================
+// │                     SETTLER TOKEN CONTRACT                    │
+// ================================================================
+
+/// @title AavePM - Ethereum Settlers NFT
+/// @author EridianAlpha
+/// @notice An ERC20 token called `Ethereum Settler` (SETTLER).
 contract SettlerToken is ERC20, ERC20Permit {
+    // ================================================================
+    // │                        STATE VARIABLES                       │
+    // ================================================================
+
+    // Constant and immutable variables
     uint256 public constant TOKEN_EMISSION_RATE = 1e18; // Tokens per second
     SettlementNft public immutable SETTLEMENT_NFT;
+
+    // Mappings
     mapping(uint256 => uint256) public s_mintedTokensFromNft;
 
     constructor(address _nftAddress) ERC20("Ethereum Settler", "SETTLER") ERC20Permit("Ethereum Settler") {
@@ -50,10 +70,10 @@ contract SettlerToken is ERC20, ERC20Permit {
         view
         returns (uint256 nftId, uint256 totalLifetimeTokensFromNft, uint256 newTokensToMint)
     {
-        nftId = SETTLEMENT_NFT.s_ownerToId(account);
+        nftId = SETTLEMENT_NFT.getOwnerToId(account);
 
         uint256 mintedLifetimeTokens = s_mintedTokensFromNft[nftId];
-        uint256 mintTimestamp = SETTLEMENT_NFT.s_mintTimestamp(nftId);
+        uint256 mintTimestamp = SETTLEMENT_NFT.getMintTimestamp(nftId);
 
         totalLifetimeTokensFromNft = _totalLifetimeTokensFromNft(mintTimestamp);
         newTokensToMint = totalLifetimeTokensFromNft - mintedLifetimeTokens;
