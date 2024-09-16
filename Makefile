@@ -118,20 +118,9 @@ remove-value:
 # │                CONTRACT SPECIFIC CONFIGURATION               │
 # ================================================================
 install:
-	# Clone forge-std and checkout the specific tag
-	rm -rf lib/forge-std
-	git clone https://github.com/foundry-rs/forge-std.git lib/forge-std && \
-	cd lib/forge-std && git checkout v1.9.2 && cd ../..
-	
-	# Clone foundry-devops and checkout the specific tag
-	rm -rf lib/foundry-devops
-	git clone https://github.com/Cyfrin/foundry-devops.git lib/foundry-devops && \
-	cd lib/foundry-devops && git checkout 0.2.2 && cd ../..
-	
-	# Clone openzeppelin-contracts and checkout the specific tag
-	rm -rf lib/openzeppelin-contracts
-	git clone https://github.com/OpenZeppelin/openzeppelin-contracts.git lib/openzeppelin-contracts && \
-	cd lib/openzeppelin-contracts && git checkout v5.0.2 && cd ../..
+	forge install foundry-rs/forge-std@v1.9.2 --no-commit && \
+	forge install Cyfrin/foundry-devops@0.2.2 --no-commit && \
+	forge install openzeppelin/openzeppelin-contracts@v5.0.2 --no-commit
 
 # ================================================================
 # │                         RUN COMMANDS                         │

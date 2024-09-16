@@ -18,7 +18,7 @@ jobs:
         uses: foundry-rs/foundry-toolchain@v1
 
       - name: Install Dependencies
-        run: git submodule init; git submodule update; make install
+        run: forge install
 
       - name: Generate Documentation
         run: forge doc

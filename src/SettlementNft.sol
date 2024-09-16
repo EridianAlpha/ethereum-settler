@@ -8,7 +8,7 @@ pragma solidity 0.8.27;
 // OpenZeppelin Imports
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
-import "@openzeppelin/contracts/utils/base64.sol";
+import "@openzeppelin/contracts/utils/Base64.sol";
 
 // Contract Imports
 import {SettlerToken} from "./SettlerToken.sol";
