@@ -1,0 +1,328 @@
+<!DOCTYPE HTML>
+<html lang="en" class="dark" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>SettlerToken - Ethereum Settlers</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon.svg">
+        <link rel="shortcut icon" href="../../favicon.png">
+        <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
+        <link rel="stylesheet" href="../../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../../highlight.css">
+        <link rel="stylesheet" href="../../tomorrow-night.css">
+        <link rel="stylesheet" href="../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../../book.css">
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "ayu" : "dark";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('dark')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../../index.html">README</a></li><li class="chapter-item expanded "><a href="../../src/SettlementNft.sol/contract.SettlementNft.html"><strong aria-hidden="true">1.</strong> SettlementNft</a></li><li class="chapter-item expanded "><a href="../../src/SettlerToken.sol/contract.SettlerToken.html" class="active"><strong aria-hidden="true">2.</strong> SettlerToken</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Ethereum Settlers</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/EridianAlpha/ethereum-settlers" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="settlertoken"><a class="header" href="#settlertoken">SettlerToken</a></h1>
+<p><a href="https://github.com/EridianAlpha/ethereum-settlers/blob/cb2b5a68766606c1c262894863ffd4e688eb18df/src/SettlerToken.sol">Git Source</a></p>
+<p><strong>Inherits:</strong>
+ERC20, ERC20Permit</p>
+<p><strong>Author:</strong>
+EridianAlpha</p>
+<p>An ERC20 token called <code>Ethereum Settler</code> (SETTLER).</p>
+<h2 id="state-variables"><a class="header" href="#state-variables">State Variables</a></h2>
+<h3 id="token_emission_rate"><a class="header" href="#token_emission_rate">TOKEN_EMISSION_RATE</a></h3>
+<pre><code class="language-solidity">uint256 public constant TOKEN_EMISSION_RATE = 1e18;
+</code></pre>
+<h3 id="settlement_nft"><a class="header" href="#settlement_nft">SETTLEMENT_NFT</a></h3>
+<pre><code class="language-solidity">SettlementNft public immutable SETTLEMENT_NFT;
+</code></pre>
+<h3 id="s_mintedtokensfromnft"><a class="header" href="#s_mintedtokensfromnft">s_mintedTokensFromNft</a></h3>
+<pre><code class="language-solidity">mapping(uint256 =&gt; uint256) public s_mintedTokensFromNft;
+</code></pre>
+<h2 id="functions"><a class="header" href="#functions">Functions</a></h2>
+<h3 id="constructor"><a class="header" href="#constructor">constructor</a></h3>
+<pre><code class="language-solidity">constructor(address _nftAddress) ERC20(&quot;Ethereum Settler&quot;, &quot;SETTLER&quot;) ERC20Permit(&quot;Ethereum Settler&quot;);
+</code></pre>
+<h3 id="mintoutstandingtokensfromnft"><a class="header" href="#mintoutstandingtokensfromnft">mintOutstandingTokensFromNft</a></h3>
+<p>Mint outstanding tokens for an account based on the Settler NFT held by that account.</p>
+<p><em>Useful when NFT is transferred as this function can be called before the NFT is transferred,</em></p>
+<pre><code class="language-solidity">function mintOutstandingTokensFromNft(address account) public;
+</code></pre>
+<p><strong>Parameters</strong></p>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>account</code></td><td><code>address</code></td><td>The account to mint tokens for.</td></tr>
+</tbody></table>
+</div>
+<h3 id="_mintoutstandingtokensfromnft"><a class="header" href="#_mintoutstandingtokensfromnft">_mintOutstandingTokensFromNft</a></h3>
+<p>Internal function to mint outstanding tokens for an account based on the Settler NFT held by that account.</p>
+<p><em>This function calculates the new tokens to mint and updates the state to reflect the minted tokens.
+If the <code>nftId</code> is zero, the function does nothing as there is no corresponding NFT for the account.</em></p>
+<pre><code class="language-solidity">function _mintOutstandingTokensFromNft(address account) internal;
+</code></pre>
+<p><strong>Parameters</strong></p>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>account</code></td><td><code>address</code></td><td>The account for which tokens are minted.</td></tr>
+</tbody></table>
+</div>
+<h3 id="_update"><a class="header" href="#_update">_update</a></h3>
+<p>Override standard ERC20 <code>_update</code> function.</p>
+<p><em>Mints outstanding SETTLER tokens based on the Settler NFT held by the account,
+then calls the parent <code>_update</code> function to update the account balances.</em></p>
+<pre><code class="language-solidity">function _update(address from, address to, uint256 value) internal override;
+</code></pre>
+<p><strong>Parameters</strong></p>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>from</code></td><td><code>address</code></td><td>The account to transfer tokens from.</td></tr>
+<tr><td><code>to</code></td><td><code>address</code></td><td></td></tr>
+<tr><td><code>value</code></td><td><code>uint256</code></td><td></td></tr>
+</tbody></table>
+</div>
+<h3 id="balanceof"><a class="header" href="#balanceof">balanceOf</a></h3>
+<p>Override standard ERC20 <code>balanceOf</code> function.</p>
+<p><em>If the account has an NFT, calculate the unminted balance based on the time since the NFT was minted.</em></p>
+<pre><code class="language-solidity">function balanceOf(address account) public view override returns (uint256 accountBalance);
+</code></pre>
+<p><strong>Parameters</strong></p>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>account</code></td><td><code>address</code></td><td>The account to get the balance of.</td></tr>
+</tbody></table>
+</div>
+<p><strong>Returns</strong></p>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>accountBalance</code></td><td><code>uint256</code></td><td>The balance of the account as a sum of the minted and unminted tokens.</td></tr>
+</tbody></table>
+</div>
+<h3 id="_totallifetimetokensfromnft"><a class="header" href="#_totallifetimetokensfromnft">_totalLifetimeTokensFromNft</a></h3>
+<p>Calculate the total lifetime tokens from an NFT based on the mint timestamp.</p>
+<pre><code class="language-solidity">function _totalLifetimeTokensFromNft(uint256 _mintTimestamp) internal view returns (uint256 totalLifetimeTokens);
+</code></pre>
+<p><strong>Parameters</strong></p>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>_mintTimestamp</code></td><td><code>uint256</code></td><td>The timestamp when the NFT was minted.</td></tr>
+</tbody></table>
+</div>
+<p><strong>Returns</strong></p>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>totalLifetimeTokens</code></td><td><code>uint256</code></td><td>The total lifetime tokens from the NFT.</td></tr>
+</tbody></table>
+</div>
+<h3 id="_calculatenewtokenstomint"><a class="header" href="#_calculatenewtokenstomint">_calculateNewTokensToMint</a></h3>
+<p>Calculate the new tokens to mint for an account based on the Settler NFT held by the account.</p>
+<pre><code class="language-solidity">function _calculateNewTokensToMint(address account)
+    internal
+    view
+    returns (uint256 nftId, uint256 totalLifetimeTokensFromNft, uint256 newTokensToMint);
+</code></pre>
+<p><strong>Parameters</strong></p>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>account</code></td><td><code>address</code></td><td>The account to calculate the new tokens to mint for.</td></tr>
+</tbody></table>
+</div>
+<p><strong>Returns</strong></p>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>nftId</code></td><td><code>uint256</code></td><td>The ID of the NFT held by the account.</td></tr>
+<tr><td><code>totalLifetimeTokensFromNft</code></td><td><code>uint256</code></td><td>The total lifetime tokens from the NFT.</td></tr>
+<tr><td><code>newTokensToMint</code></td><td><code>uint256</code></td><td>The new tokens to mint for the account.</td></tr>
+</tbody></table>
+</div>
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../src/SettlementNft.sol/contract.SettlementNft.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../src/SettlementNft.sol/contract.SettlementNft.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr.min.js"></script>
+        <script src="../../mark.min.js"></script>
+        <script src="../../searcher.js"></script>
+
+        <script src="../../clipboard.min.js"></script>
+        <script src="../../highlight.js"></script>
+        <script src="../../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../../solidity.min.js"></script>
+
+
+    </div>
+    </body>
+</html>
