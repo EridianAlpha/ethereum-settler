@@ -42,6 +42,10 @@ contract SettlementNft is ERC721 {
     mapping(uint256 => uint256) internal s_mintTimestamp;
     mapping(address => uint256) internal s_ownerToId;
 
+    // ================================================================
+    // │                     FUNCTIONS - CONSTRUCTOR                  │
+    // ================================================================
+
     /// @notice Constructor to initialize the contract with a base image URI and deploy the SettlerToken contract.
     /// @param _baseImageUri The base URI for the NFT image.
     constructor(string memory _baseImageUri) ERC721("Ethereum Settlement", "SETTLEMENT") {
@@ -49,7 +53,11 @@ contract SettlementNft is ERC721 {
         SETTLER_TOKEN = new SettlerToken(address(this));
     }
 
-    /// @notice Override standard ERC721 update function.
+    // ================================================================
+    // │                      FUNCTIONS - UPDATE                      │
+    // ================================================================
+
+    /// @notice Override standard ERC721 `_update` function.
     /// @dev Mints outstanding SETTLER tokens.
     ///      Check only 1 active NFT per address.
     /// @param to The address to transfer the NFT to.
@@ -73,12 +81,17 @@ contract SettlementNft is ERC721 {
         // Call the parent _update function
         previousOwner = super._update(to, tokenId, auth);
 
-        require
-
         // Only allow one active NFT per address at a time
         require(balanceOf(to) <= 1, SettlementNft_SingleActivePerAddress());
     }
 
+    // ================================================================
+    // │                        FUNCTIONS - MINT                      │
+    // ================================================================
+
+    /// @notice Override standard ERC721 `mint` function.
+    /// @dev Mints a new NFT and sets the mint timestamp.
+    ///      Adds the msg.sender to the s_ownerToId mapping.
     function mint() external {
         _safeMint(msg.sender, nextTokenId);
         s_mintTimestamp[nextTokenId] = block.timestamp;
@@ -86,7 +99,15 @@ contract SettlementNft is ERC721 {
         nextTokenId++;
     }
 
-    function tokenURI(uint256 tokenId) public view override returns (string memory) {
+    // ================================================================
+    // │                    FUNCTIONS - URI GENERATION                │
+    // ================================================================
+
+    /// @notice Override standard ERC721 `tokenURI` function.
+    /// @dev Generates the JSON metadata for the NFT.
+    /// @param tokenId The ID of the NFT.
+    /// @return uri The JSON metadata for the NFT.
+    function tokenURI(uint256 tokenId) public view override returns (string memory uri) {
         // Create the JSON metadata and encode it in base64
         string memory json = Base64.encode(
             bytes(
@@ -111,14 +132,18 @@ contract SettlementNft is ERC721 {
                 )
             )
         );
+
         return string(abi.encodePacked("data:application/json;base64,", json));
     }
 
+    /// @notice Generates the SVG for the NFT.
+    /// @param tokenId The ID of the NFT.
+    /// @return svg The SVG for the NFT.
     function _generateSvg(uint256 tokenId) internal view returns (string memory svg) {
         string memory tokenIdString = Strings.toString(tokenId);
 
         // Create the composite SVG with the settlement ID and days since mint as an overlay
-        svg = string(
+        return string(
             abi.encodePacked(
                 '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 350 350">',
                 '<image href="',
@@ -131,7 +156,14 @@ contract SettlementNft is ERC721 {
         );
     }
 
-    function _generateSettlementRectangle(string memory tokenIdString) internal pure returns (string memory) {
+    /// @notice Generates the SVG rectangle for the settlement ID.
+    /// @param tokenIdString The ID of the NFT as a string.
+    /// @return rectangleSvg The SVG rectangle for the settlement ID.
+    function _generateSettlementRectangle(string memory tokenIdString)
+        internal
+        pure
+        returns (string memory rectangleSvg)
+    {
         uint256 settlementNumberXWidth = 52 + ((bytes(tokenIdString).length) * 5);
 
         return string(
@@ -149,7 +181,10 @@ contract SettlementNft is ERC721 {
         );
     }
 
-    function _generateDaysSinceMintRectangle(uint256 tokenId) internal view returns (string memory) {
+    /// @notice Generates the SVG rectangle for the days since mint.
+    /// @param tokenId The ID of the NFT.
+    /// @return rectangleSvg The SVG rectangle for the days since mint.
+    function _generateDaysSinceMintRectangle(uint256 tokenId) internal view returns (string memory rectangleSvg) {
         uint256 daysSinceMint = ((block.timestamp + (60 * 60 * 24)) - s_mintTimestamp[tokenId]) / (60 * 60 * 24);
         uint256 daysSinceMintXWidth = 22 + ((bytes(Strings.toString(daysSinceMint)).length) * 5);
 
@@ -168,12 +203,21 @@ contract SettlementNft is ERC721 {
         );
     }
 
-    // Getters
-    function getOwnerToId(address owner) external view returns (uint256) {
+    // ================================================================
+    // │                       FUNCTIONS - GETTERS                    │
+    // ================================================================
+
+    /// @notice Getter function to get the NFT ID from an owner address.
+    /// @param owner The address of the NFT owner.
+    /// @return tokenId The ID of the NFT.
+    function getOwnerToId(address owner) external view returns (uint256 tokenId) {
         return s_ownerToId[owner];
     }
 
-    function getMintTimestamp(uint256 tokenId) external view returns (uint256) {
+    /// @notice Getter function to get the mint timestamp of an NFT from a token ID.
+    /// @param tokenId The ID of the NFT.
+    /// @return mintTimestamp The timestamp when the NFT was minted.
+    function getMintTimestamp(uint256 tokenId) external view returns (uint256 mintTimestamp) {
         return s_mintTimestamp[tokenId];
     }
 }
