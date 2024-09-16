@@ -1,4 +1,4 @@
-# SETTLER - Ethereum Settlers
+# Ethereum Settlers
 
 - [1. Overview](#1-overview)
 - [2. Clone repository](#2-clone-repository)
@@ -23,7 +23,7 @@ A Settlement NFT can only be held by one address at a time, but there is nothing
 ## 2. Clone repository
 
 ```bash
-git clone https://github.com/EridianAlpha/ethereum-settler.git
+git clone https://github.com/EridianAlpha/ethereum-settlers.git
 ```
 
 ### 2.1. Install Dependencies
