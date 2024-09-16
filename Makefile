@@ -118,7 +118,7 @@ remove-value:
 # │                CONTRACT SPECIFIC CONFIGURATION               │
 # ================================================================
 install:
-	forge install foundry-rs/forge-std@v1.9.2 --no-commit && \
+	forge install foundry-rs/forge-std@v1.9.1 --no-commit && \
 	forge install Cyfrin/foundry-devops@0.2.2 --no-commit && \
 	forge install openzeppelin/openzeppelin-contracts@v5.0.2 --no-commit
 
