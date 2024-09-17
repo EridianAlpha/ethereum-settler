@@ -16,7 +16,7 @@ import {SettlementNft} from "./SettlementNft.sol";
 // │                     SETTLER TOKEN CONTRACT                    │
 // ================================================================
 
-/// @title AavePM - Ethereum Settlers NFT
+/// @title Ethereum Settlers - Token
 /// @author EridianAlpha
 /// @notice An ERC20 token called `Ethereum Settler` (SETTLER).
 contract SettlerToken is ERC20, ERC20Permit {
@@ -35,6 +35,8 @@ contract SettlerToken is ERC20, ERC20Permit {
     // │                     FUNCTIONS - CONSTRUCTOR                  │
     // ================================================================
 
+    /// @notice Constructor for the Settler Token contract to initialize the Settlement NFT address.
+    /// @param _nftAddress The address of the Settlement NFT contract.
     constructor(address _nftAddress) ERC20("Ethereum Settler", "SETTLER") ERC20Permit("Ethereum Settler") {
         SETTLEMENT_NFT = SettlementNft(_nftAddress);
     }
