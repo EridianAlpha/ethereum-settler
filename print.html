@@ -277,18 +277,18 @@ Input value as an address e.g. <code>0x123...</code>.</p>
 <h2 id="6-license"><a class="header" href="#6-license">6. License</a></h2>
 <p><a href="https://choosealicense.com/licenses/mit/">MIT</a></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="settlementnft"><a class="header" href="#settlementnft">SettlementNft</a></h1>
-<p><a href="https://github.com/EridianAlpha/ethereum-settlers/blob/cb2b5a68766606c1c262894863ffd4e688eb18df/src/SettlementNft.sol">Git Source</a></p>
+<p><a href="https://github.com/EridianAlpha/ethereum-settlers/blob/7c0012b514a481db1bb8dc9cb46be4ce622c187a/src/SettlementNft.sol">Git Source</a></p>
 <p><strong>Inherits:</strong>
 ERC721</p>
 <p><strong>Author:</strong>
 EridianAlpha</p>
 <p>An ERC721 NFT token called <code>Ethereum Settlement</code> (SETTLEMENT).</p>
 <h2 id="state-variables"><a class="header" href="#state-variables">State Variables</a></h2>
-<h3 id="settler_token"><a class="header" href="#settler_token">SETTLER_TOKEN</a></h3>
-<pre><code class="language-solidity">SettlerToken public immutable SETTLER_TOKEN;
-</code></pre>
 <h3 id="base_image_uri"><a class="header" href="#base_image_uri">BASE_IMAGE_URI</a></h3>
 <pre><code class="language-solidity">string public BASE_IMAGE_URI;
+</code></pre>
+<h3 id="settler_token"><a class="header" href="#settler_token">SETTLER_TOKEN</a></h3>
+<pre><code class="language-solidity">SettlerToken public immutable SETTLER_TOKEN;
 </code></pre>
 <h3 id="nexttokenid"><a class="header" href="#nexttokenid">nextTokenId</a></h3>
 <pre><code class="language-solidity">uint256 public nextTokenId = 1;
@@ -312,7 +312,7 @@ EridianAlpha</p>
 <h3 id="_update"><a class="header" href="#_update">_update</a></h3>
 <p>Override standard ERC721 <code>_update</code> function.</p>
 <p><em>Mints outstanding SETTLER tokens.
-Check only 1 active NFT per address.</em></p>
+Checks only 1 NFT per address.</em></p>
 <pre><code class="language-solidity">function _update(address to, uint256 tokenId, address auth) internal override returns (address previousOwner);
 </code></pre>
 <p><strong>Parameters</strong></p>
@@ -348,6 +348,9 @@ Adds the msg.sender to the s_ownerToId mapping.</em></p>
 <tr><td><code>uri</code></td><td><code>string</code></td><td>The JSON metadata for the NFT.</td></tr>
 </tbody></table>
 </div>
+<h3 id="_generateattributes"><a class="header" href="#_generateattributes">_generateAttributes</a></h3>
+<pre><code class="language-solidity">function _generateAttributes(uint256 tokenId) internal view returns (string memory attributes);
+</code></pre>
 <h3 id="_generatesvg"><a class="header" href="#_generatesvg">_generateSvg</a></h3>
 <p>Generates the SVG for the NFT.</p>
 <pre><code class="language-solidity">function _generateSvg(uint256 tokenId) internal view returns (string memory svg);
@@ -390,6 +393,20 @@ Adds the msg.sender to the s_ownerToId mapping.</em></p>
 <tr><td><code>rectangleSvg</code></td><td><code>string</code></td><td>The SVG rectangle for the days since mint.</td></tr>
 </tbody></table>
 </div>
+<h3 id="_dayssincemint"><a class="header" href="#_dayssincemint">_daysSinceMint</a></h3>
+<p>Calculates the days since mint for an NFT.</p>
+<pre><code class="language-solidity">function _daysSinceMint(uint256 _mintTimestamp) internal view returns (uint256 daysSinceMint);
+</code></pre>
+<p><strong>Parameters</strong></p>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>_mintTimestamp</code></td><td><code>uint256</code></td><td>The timestamp when the NFT was minted.</td></tr>
+</tbody></table>
+</div>
+<p><strong>Returns</strong></p>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>daysSinceMint</code></td><td><code>uint256</code></td><td>The days since the NFT was minted.</td></tr>
+</tbody></table>
+</div>
 <h3 id="getownertoid"><a class="header" href="#getownertoid">getOwnerToId</a></h3>
 <p>Getter function to get the NFT ID from an owner address.</p>
 <pre><code class="language-solidity">function getOwnerToId(address owner) external view returns (uint256 tokenId);
@@ -423,7 +440,7 @@ Adds the msg.sender to the s_ownerToId mapping.</em></p>
 <pre><code class="language-solidity">error SettlementNft_SingleActivePerAddress();
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="settlertoken"><a class="header" href="#settlertoken">SettlerToken</a></h1>
-<p><a href="https://github.com/EridianAlpha/ethereum-settlers/blob/cb2b5a68766606c1c262894863ffd4e688eb18df/src/SettlerToken.sol">Git Source</a></p>
+<p><a href="https://github.com/EridianAlpha/ethereum-settlers/blob/7c0012b514a481db1bb8dc9cb46be4ce622c187a/src/SettlerToken.sol">Git Source</a></p>
 <p><strong>Inherits:</strong>
 ERC20, ERC20Permit</p>
 <p><strong>Author:</strong>
@@ -441,12 +458,18 @@ EridianAlpha</p>
 </code></pre>
 <h2 id="functions-1"><a class="header" href="#functions-1">Functions</a></h2>
 <h3 id="constructor-1"><a class="header" href="#constructor-1">constructor</a></h3>
+<p>Constructor for the Settler Token contract to initialize the Settlement NFT address.</p>
 <pre><code class="language-solidity">constructor(address _nftAddress) ERC20(&quot;Ethereum Settler&quot;, &quot;SETTLER&quot;) ERC20Permit(&quot;Ethereum Settler&quot;);
 </code></pre>
+<p><strong>Parameters</strong></p>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>_nftAddress</code></td><td><code>address</code></td><td>The address of the Settlement NFT contract.</td></tr>
+</tbody></table>
+</div>
 <h3 id="mintoutstandingtokensfromnft"><a class="header" href="#mintoutstandingtokensfromnft">mintOutstandingTokensFromNft</a></h3>
 <p>Mint outstanding tokens for an account based on the Settler NFT held by that account.</p>
 <p><em>Useful when NFT is transferred as this function can be called before the NFT is transferred,</em></p>
-<pre><code class="language-solidity">function mintOutstandingTokensFromNft(address account) public;
+<pre><code class="language-solidity">function mintOutstandingTokensFromNft(address account) external;
 </code></pre>
 <p><strong>Parameters</strong></p>
 <div class="table-wrapper"><table><thead><tr><th>Name</th><th>Type</th><th>Description</th></tr></thead><tbody>
