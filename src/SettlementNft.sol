@@ -17,7 +17,7 @@ import {SettlerToken} from "./SettlerToken.sol";
 // │                    SETTLEMENT NFT CONTRACT                   │
 // ================================================================
 
-/// @title AavePM - Ethereum Settlers NFT
+/// @title Ethereum Settlers - NFT
 /// @author EridianAlpha
 /// @notice An ERC721 NFT token called `Ethereum Settlement` (SETTLEMENT).
 contract SettlementNft is ERC721 {
@@ -32,8 +32,8 @@ contract SettlementNft is ERC721 {
     // ================================================================
 
     // Constant and immutable variables
-    SettlerToken public immutable SETTLER_TOKEN;
     string public BASE_IMAGE_URI;
+    SettlerToken public immutable SETTLER_TOKEN;
 
     // Mutable variables
     uint256 public nextTokenId = 1; // Start token IDs at 1
@@ -59,7 +59,7 @@ contract SettlementNft is ERC721 {
 
     /// @notice Override standard ERC721 `_update` function.
     /// @dev Mints outstanding SETTLER tokens.
-    ///      Check only 1 active NFT per address.
+    ///      Checks only 1 NFT per address.
     /// @param to The address to transfer the NFT to.
     /// @param tokenId The ID of the NFT.
     /// @param auth The address that is authorized to transfer the NFT.
@@ -116,7 +116,7 @@ contract SettlementNft is ERC721 {
                         '{"name": "Ethereum Settlement #',
                         Strings.toString(tokenId),
                         '",',
-                        '"description": "An on-chain NFT representing an Ethereum settlement.",',
+                        '"description": "An Ethereum Settlement NFT for anyone who feels at home as part of the Ethereum ecosystem.",',
                         '"image": "',
                         BASE_IMAGE_URI,
                         '",',
@@ -124,9 +124,7 @@ contract SettlementNft is ERC721 {
                         Base64.encode(bytes(_generateSvg(tokenId))),
                         '",',
                         '"attributes": [',
-                        '{"trait_type": "Mint Timestamp", "value": "',
-                        Strings.toString(s_mintTimestamp[tokenId]),
-                        '"}',
+                        _generateAttributes(tokenId),
                         "]}"
                     )
                 )
@@ -134,6 +132,24 @@ contract SettlementNft is ERC721 {
         );
 
         return string(abi.encodePacked("data:application/json;base64,", json));
+    }
+
+    function _generateAttributes(uint256 tokenId) internal view returns (string memory attributes) {
+        uint256 mintTimestamp = s_mintTimestamp[tokenId];
+
+        return string(
+            abi.encodePacked(
+                '{"trait_type": "Chain", "value": "',
+                Strings.toString(block.chainid),
+                '"},',
+                '{"trait_type": "Mint Timestamp", "value": "',
+                Strings.toString(mintTimestamp),
+                '"},',
+                '{"trait_type": "Days Since Mint", "value": "',
+                Strings.toString(_daysSinceMint(mintTimestamp)),
+                '"}'
+            )
+        );
     }
 
     /// @notice Generates the SVG for the NFT.
@@ -185,7 +201,7 @@ contract SettlementNft is ERC721 {
     /// @param tokenId The ID of the NFT.
     /// @return rectangleSvg The SVG rectangle for the days since mint.
     function _generateDaysSinceMintRectangle(uint256 tokenId) internal view returns (string memory rectangleSvg) {
-        uint256 daysSinceMint = ((block.timestamp + (60 * 60 * 24)) - s_mintTimestamp[tokenId]) / (60 * 60 * 24);
+        uint256 daysSinceMint = _daysSinceMint(s_mintTimestamp[tokenId]);
         uint256 daysSinceMintXWidth = 22 + ((bytes(Strings.toString(daysSinceMint)).length) * 5);
 
         return string(
@@ -196,11 +212,18 @@ contract SettlementNft is ERC721 {
                 Strings.toString(daysSinceMintXWidth),
                 '%" height="38" fill="#201649" />',
                 '<text x="50%" y="48%" dominant-baseline="middle" text-anchor="middle" font-size="22" font-weight="bold" font-family="monospace" fill="white">',
-                Strings.toString(daysSinceMint > 1 ? daysSinceMint : 1),
+                Strings.toString(daysSinceMint),
                 daysSinceMint > 1 ? " days" : " day",
                 "</text>"
             )
         );
+    }
+
+    /// @notice Calculates the days since mint for an NFT.
+    /// @param _mintTimestamp The timestamp when the NFT was minted.
+    /// @return daysSinceMint The days since the NFT was minted.
+    function _daysSinceMint(uint256 _mintTimestamp) internal view returns (uint256 daysSinceMint) {
+        daysSinceMint = 1 + (block.timestamp - _mintTimestamp) / (60 * 60 * 24);
     }
 
     // ================================================================
