@@ -51,7 +51,7 @@ contract SettlerToken is ERC20, ERC20Permit {
     //       It can also be called at any time by anyone,
     //       but that does not make any difference to the balance calculations.
     /// @param account The account to mint tokens for.
-    function mintOutstandingTokensFromNft(address account) public {
+    function mintOutstandingTokensFromNft(address account) external {
         _mintOutstandingTokensFromNft(account);
     }
 
