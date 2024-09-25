@@ -22,7 +22,7 @@ Minting a Settlement NFT is free and can be done by anyone. The only cost is the
 
 Holding a Settlement NFT earns the holder a newly minted SETTLER tokens every second.
 
-A Settlement NFT can only be held by one address at a time, but there is nothing stopping multiple addresses from each holding a different Settlement NFT. This means that the SETTLER token can have no monetary value, as it is not a scarce resource and an unlimited amount can be created simply by minting more Settlement NFTs. However, the SETTLER token could have utility in future when used in conjunction with a Settlement NFT. E.g. A future NFT mint could require a certain amount of SETTLER tokens and a Settlement NFT that is over a certain age.
+A Settlement NFT can only be held by one address at a time, but there is nothing stopping multiple addresses from each holding a different Settlement NFT. This means that the SETTLER token can have no monetary value, as it is not a scarce resource and an unlimited amount can be created simply by minting more Settlement NFTs.
 
 Live on [https://settlers.eridian.xyz](https://settlers.eridian.xyz)
 
