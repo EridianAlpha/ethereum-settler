@@ -7,8 +7,10 @@ import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 import {SettlementNft} from "src/SettlementNft.sol";
 import {SettlerToken} from "src/SettlerToken.sol";
+import {ViewAggregator} from "src/ViewAggregator.sol";
 
 import {Deploy} from "script/Deploy.s.sol";
+import {DeployViewAggregator} from "script/DeployViewAggregator.s.sol";
 
 contract SettlerTestSetup is Test {
     // Added to remove this whole testing file from coverage report.
@@ -16,6 +18,7 @@ contract SettlerTestSetup is Test {
 
     SettlementNft settlementNft;
     SettlerToken settlerToken;
+    ViewAggregator viewAggregator;
 
     // Setup testing constants
     uint256 internal constant GAS_PRICE = 1;
@@ -34,8 +37,13 @@ contract SettlerTestSetup is Test {
         Deploy deploy = new Deploy();
         (address settlementNftAddress, address settlerTokenAddress) = deploy.run();
 
+        // Deploy the ViewAggregator contract
+        DeployViewAggregator deployViewAggregator = new DeployViewAggregator();
+        address viewAggregatorAddress = deployViewAggregator.run(settlementNftAddress);
+
         settlementNft = SettlementNft(settlementNftAddress);
         settlerToken = SettlerToken(settlerTokenAddress);
+        viewAggregator = ViewAggregator(viewAggregatorAddress);
 
         // Give all the users some starting balance
         vm.deal(user1, STARTING_BALANCE);
