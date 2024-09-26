@@ -90,7 +90,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">README</a></li><li class="chapter-item expanded "><a href="src/SettlementNft.sol/contract.SettlementNft.html"><strong aria-hidden="true">1.</strong> SettlementNft</a></li><li class="chapter-item expanded "><a href="src/SettlerToken.sol/contract.SettlerToken.html"><strong aria-hidden="true">2.</strong> SettlerToken</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">README</a></li><li class="chapter-item expanded "><a href="src/SettlementNft.sol/contract.SettlementNft.html"><strong aria-hidden="true">1.</strong> SettlementNft</a></li><li class="chapter-item expanded "><a href="src/SettlerToken.sol/contract.SettlerToken.html"><strong aria-hidden="true">2.</strong> SettlerToken</a></li><li class="chapter-item expanded "><a href="src/ViewAggregator.sol/contract.ViewAggregator.html"><strong aria-hidden="true">3.</strong> ViewAggregator</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -277,7 +277,7 @@ Input value as an address e.g. <code>0x123...</code>.</p>
 <h2 id="6-license"><a class="header" href="#6-license">6. License</a></h2>
 <p><a href="https://choosealicense.com/licenses/mit/">MIT</a></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="settlementnft"><a class="header" href="#settlementnft">SettlementNft</a></h1>
-<p><a href="https://github.com/EridianAlpha/ethereum-settlers/blob/1aa478c182445661827b5a0a2edee34fec7e3bc1/src/SettlementNft.sol">Git Source</a></p>
+<p><a href="https://github.com/EridianAlpha/ethereum-settlers/blob/77c52a1d1564b0d2732673ccc4ede39e93bbffa3/src/SettlementNft.sol">Git Source</a></p>
 <p><strong>Inherits:</strong>
 ERC721</p>
 <p><strong>Author:</strong>
@@ -440,7 +440,7 @@ Adds the msg.sender to the s_ownerToId mapping.</em></p>
 <pre><code class="language-solidity">error SettlementNft_SingleActivePerAddress();
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="settlertoken"><a class="header" href="#settlertoken">SettlerToken</a></h1>
-<p><a href="https://github.com/EridianAlpha/ethereum-settlers/blob/1aa478c182445661827b5a0a2edee34fec7e3bc1/src/SettlerToken.sol">Git Source</a></p>
+<p><a href="https://github.com/EridianAlpha/ethereum-settlers/blob/77c52a1d1564b0d2732673ccc4ede39e93bbffa3/src/SettlerToken.sol">Git Source</a></p>
 <p><strong>Inherits:</strong>
 ERC20, ERC20Permit</p>
 <p><strong>Author:</strong>
@@ -547,7 +547,99 @@ then calls the parent <code>_update</code> function to update the account balanc
 <tr><td><code>totalLifetimeTokensFromNft</code></td><td><code>uint256</code></td><td>The total lifetime tokens from the NFT.</td></tr>
 <tr><td><code>newTokensToMint</code></td><td><code>uint256</code></td><td>The new tokens to mint for the account.</td></tr>
 </tbody></table>
+</div><div style="break-before: page; page-break-before: always;"></div><h1 id="viewaggregator"><a class="header" href="#viewaggregator">ViewAggregator</a></h1>
+<p><a href="https://github.com/EridianAlpha/ethereum-settlers/blob/77c52a1d1564b0d2732673ccc4ede39e93bbffa3/src/ViewAggregator.sol">Git Source</a></p>
+<p><strong>Author:</strong>
+EridianAlpha</p>
+<p>An aggregator contract for multi-calling view functions on Ethereum Settlers contracts.</p>
+<h2 id="state-variables-2"><a class="header" href="#state-variables-2">State Variables</a></h2>
+<h3 id="settlement_nft-1"><a class="header" href="#settlement_nft-1">SETTLEMENT_NFT</a></h3>
+<pre><code class="language-solidity">SettlementNft public immutable SETTLEMENT_NFT;
+</code></pre>
+<h3 id="settlers_token"><a class="header" href="#settlers_token">SETTLERS_TOKEN</a></h3>
+<pre><code class="language-solidity">SettlerToken public immutable SETTLERS_TOKEN;
+</code></pre>
+<h2 id="functions-2"><a class="header" href="#functions-2">Functions</a></h2>
+<h3 id="constructor-2"><a class="header" href="#constructor-2">constructor</a></h3>
+<p>Constructor to initialize the Settlement NFT and SETTLER token addresses.</p>
+<pre><code class="language-solidity">constructor(address _nftAddress);
+</code></pre>
+<p><strong>Parameters</strong></p>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>_nftAddress</code></td><td><code>address</code></td><td>The address of the Settlement NFT contract.</td></tr>
+</tbody></table>
 </div>
+<h3 id="getsequentialdata"><a class="header" href="#getsequentialdata">getSequentialData</a></h3>
+<p>Get the sequential data for a range of NFTs.</p>
+<pre><code class="language-solidity">function getSequentialData(uint256 _startingNftId, uint256 _endingNftId)
+    public
+    view
+    returns (SettlementData[] memory results);
+</code></pre>
+<p><strong>Parameters</strong></p>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>_startingNftId</code></td><td><code>uint256</code></td><td>The starting NFT ID.</td></tr>
+<tr><td><code>_endingNftId</code></td><td><code>uint256</code></td><td>The ending NFT ID.</td></tr>
+</tbody></table>
+</div>
+<p><strong>Returns</strong></p>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>results</code></td><td><code>SettlementData[]</code></td><td>The array of SettlementData structs for the range of NFTs.</td></tr>
+</tbody></table>
+</div>
+<h3 id="getrandomdata"><a class="header" href="#getrandomdata">getRandomData</a></h3>
+<p>Get a pseudo-random selection of NFTs.</p>
+<pre><code class="language-solidity">function getRandomData(uint256 requestedNumber) public view returns (SettlementData[] memory results);
+</code></pre>
+<p><strong>Parameters</strong></p>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>requestedNumber</code></td><td><code>uint256</code></td><td>The number of NFTs to return.</td></tr>
+</tbody></table>
+</div>
+<p><strong>Returns</strong></p>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>results</code></td><td><code>SettlementData[]</code></td><td>The array of SettlementData structs for the random NFTs.</td></tr>
+</tbody></table>
+</div>
+<h3 id="_dayssincemint-1"><a class="header" href="#_dayssincemint-1">_daysSinceMint</a></h3>
+<p>Calculates the days since mint for an NFT.</p>
+<pre><code class="language-solidity">function _daysSinceMint(uint256 _mintTimestamp) internal view returns (uint256 daysSinceMint);
+</code></pre>
+<p><strong>Parameters</strong></p>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>_mintTimestamp</code></td><td><code>uint256</code></td><td>The timestamp when the NFT was minted.</td></tr>
+</tbody></table>
+</div>
+<p><strong>Returns</strong></p>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>daysSinceMint</code></td><td><code>uint256</code></td><td>The days since the NFT was minted.</td></tr>
+</tbody></table>
+</div>
+<h3 id="_populatesettlementdata"><a class="header" href="#_populatesettlementdata">_populateSettlementData</a></h3>
+<p>Populates the SettlementData struct for an NFT.</p>
+<pre><code class="language-solidity">function _populateSettlementData(uint256 i) internal view returns (SettlementData memory data);
+</code></pre>
+<p><strong>Parameters</strong></p>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>i</code></td><td><code>uint256</code></td><td>The NFT ID.</td></tr>
+</tbody></table>
+</div>
+<p><strong>Returns</strong></p>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>data</code></td><td><code>SettlementData</code></td><td>The SettlementData struct for the NFT.</td></tr>
+</tbody></table>
+</div>
+<h2 id="structs"><a class="header" href="#structs">Structs</a></h2>
+<h3 id="settlementdata"><a class="header" href="#settlementdata">SettlementData</a></h3>
+<pre><code class="language-solidity">struct SettlementData {
+    address owner;
+    uint256 daysSinceMint;
+    uint256 tokens;
+    uint256 chainId;
+    uint256 nftId;
+}
+</code></pre>
+
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
