@@ -126,6 +126,7 @@ install:
 # │                         RUN COMMANDS                         │
 # ================================================================
 interactions-script = @forge script script/Interactions.s.sol:Interactions ${NETWORK_ARGS} -vvvv
+interactionsViewAggregator-script = @forge script script/InteractionsViewAggregator.s.sol:InteractionsViewAggregator ${NETWORK_ARGS} -vvvv
 
 # ================================================================
 # │                    RUN COMMANDS - DEPLOYMENT                 │
@@ -134,6 +135,13 @@ deploy-script:; @forge script script/Deploy.s.sol:Deploy --sig "run()" ${NETWORK
 deploy: get-network-args \
 	deploy-script
 
+deployViewAggregator-script:; @forge script script/DeployViewAggregator.s.sol:DeployViewAggregator --sig "run(address)" ${MAKE_CLI_INPUT_VALUE} ${NETWORK_ARGS} -vvvv
+deployViewAggregator: get-network-args \
+	ask-for-value \
+	store-value \
+	deployViewAggregator-script \
+	remove-value
+
 # ================================================================
 # │                    RUN COMMANDS - MINT NFT                   │
 # ================================================================
@@ -141,6 +149,9 @@ mintNft-script:; $(interactions-script) --sig "mintNft()"
 mintNft: get-network-args \
 	mintNft-script
 
+# ================================================================
+# │                     RUN COMMANDS - GETTERS                   │
+# ================================================================
 getMintTimestamp-script:; $(interactions-script) --sig "getMintTimestamp(uint256)" ${MAKE_CLI_INPUT_VALUE}
 getMintTimestamp: get-network-args \
 	ask-for-value \
@@ -153,4 +164,21 @@ getSettlerBalance: get-network-args \
 	ask-for-value \
 	store-value \
 	getSettlerBalance-script \
+	remove-value
+
+# ================================================================
+# │                 RUN COMMANDS - VIEW AGGREGATOR               │
+# ================================================================
+getSequentialData-script:; $(interactionsViewAggregator-script) --sig "getSequentialData(uint256, uint256)" $(shell echo $(MAKE_CLI_INPUT_VALUE) | tr ',' ' ')
+getSequentialData: get-network-args \
+	ask-for-value \
+	store-value \
+	getSequentialData-script \
+	remove-value
+
+getRandomData-script:; $(interactionsViewAggregator-script) --sig "getRandomData(uint256)" ${MAKE_CLI_INPUT_VALUE}
+getRandomData: get-network-args \
+	ask-for-value \
+	store-value \
+	getRandomData-script \
 	remove-value
