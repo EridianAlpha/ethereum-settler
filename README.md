@@ -20,7 +20,7 @@ An ERC20 token called `Ethereum Settler` (SETTLER) and an ERC721 NFT token calle
 
 Minting a Settlement NFT is free and can be done by anyone. The only cost is the gas fee for the transaction.
 
-Holding a Settlement NFT earns the holder a newly minted SETTLER tokens every second.
+Holding a Settlement NFT gives the holder a newly minted SETTLER tokens every second.
 
 A Settlement NFT can only be held by one address at a time, but there is nothing stopping multiple addresses from each holding a different Settlement NFT. This means that the SETTLER token can have no monetary value, as it is not a scarce resource and an unlimited amount can be created simply by minting more Settlement NFTs.
 
