@@ -329,7 +329,7 @@ Input value as a number of NFTs to return e.g. <code>20</code>.</p>
 <h2 id="6-license"><a class="header" href="#6-license">6. License</a></h2>
 <p><a href="https://choosealicense.com/licenses/mit/">MIT</a></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="settlementnft"><a class="header" href="#settlementnft">SettlementNft</a></h1>
-<p><a href="https://github.com/EridianAlpha/ethereum-settlers/blob/df38136b15e9a1e7f30c88a1a017a6be2df82be7/src/SettlementNft.sol">Git Source</a></p>
+<p><a href="https://github.com/EridianAlpha/ethereum-settlers/blob/97d1ba3156ed8553485c8f5836870d6f3bd41c5a/src/SettlementNft.sol">Git Source</a></p>
 <p><strong>Inherits:</strong>
 ERC721</p>
 <p><strong>Author:</strong>
@@ -401,8 +401,19 @@ Adds the msg.sender to the s_ownerToId mapping.</em></p>
 </tbody></table>
 </div>
 <h3 id="_generateattributes"><a class="header" href="#_generateattributes">_generateAttributes</a></h3>
+<p>Generates the attributes for the NFT used in the tokenURI.</p>
 <pre><code class="language-solidity">function _generateAttributes(uint256 tokenId) internal view returns (string memory attributes);
 </code></pre>
+<p><strong>Parameters</strong></p>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>tokenId</code></td><td><code>uint256</code></td><td>The ID of the NFT.</td></tr>
+</tbody></table>
+</div>
+<p><strong>Returns</strong></p>
+<div class="table-wrapper"><table><thead><tr><th>Name</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>attributes</code></td><td><code>string</code></td><td>The attributes for the NFT.</td></tr>
+</tbody></table>
+</div>
 <h3 id="_generatesvg"><a class="header" href="#_generatesvg">_generateSvg</a></h3>
 <p>Generates the SVG for the NFT.</p>
 <pre><code class="language-solidity">function _generateSvg(uint256 tokenId) internal view returns (string memory svg);
@@ -492,7 +503,7 @@ Adds the msg.sender to the s_ownerToId mapping.</em></p>
 <pre><code class="language-solidity">error SettlementNft_SingleActivePerAddress();
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="settlertoken"><a class="header" href="#settlertoken">SettlerToken</a></h1>
-<p><a href="https://github.com/EridianAlpha/ethereum-settlers/blob/df38136b15e9a1e7f30c88a1a017a6be2df82be7/src/SettlerToken.sol">Git Source</a></p>
+<p><a href="https://github.com/EridianAlpha/ethereum-settlers/blob/97d1ba3156ed8553485c8f5836870d6f3bd41c5a/src/SettlerToken.sol">Git Source</a></p>
 <p><strong>Inherits:</strong>
 ERC20, ERC20Permit</p>
 <p><strong>Author:</strong>
@@ -520,7 +531,7 @@ EridianAlpha</p>
 </div>
 <h3 id="mintoutstandingtokensfromnft"><a class="header" href="#mintoutstandingtokensfromnft">mintOutstandingTokensFromNft</a></h3>
 <p>Mint outstanding tokens for an account based on the Settler NFT held by that account.</p>
-<p><em>Useful when NFT is transferred as this function can be called before the NFT is transferred,</em></p>
+<p><em>Useful when an NFT is transferred as this function can be called before the NFT is transferred,</em></p>
 <pre><code class="language-solidity">function mintOutstandingTokensFromNft(address account) external;
 </code></pre>
 <p><strong>Parameters</strong></p>
@@ -600,7 +611,7 @@ then calls the parent <code>_update</code> function to update the account balanc
 <tr><td><code>newTokensToMint</code></td><td><code>uint256</code></td><td>The new tokens to mint for the account.</td></tr>
 </tbody></table>
 </div><div style="break-before: page; page-break-before: always;"></div><h1 id="viewaggregator"><a class="header" href="#viewaggregator">ViewAggregator</a></h1>
-<p><a href="https://github.com/EridianAlpha/ethereum-settlers/blob/df38136b15e9a1e7f30c88a1a017a6be2df82be7/src/ViewAggregator.sol">Git Source</a></p>
+<p><a href="https://github.com/EridianAlpha/ethereum-settlers/blob/97d1ba3156ed8553485c8f5836870d6f3bd41c5a/src/ViewAggregator.sol">Git Source</a></p>
 <p><strong>Author:</strong>
 EridianAlpha</p>
 <p>An aggregator contract for multi-calling view functions on Ethereum Settlers contracts.</p>
@@ -641,7 +652,11 @@ EridianAlpha</p>
 </div>
 <h3 id="getrandomdata"><a class="header" href="#getrandomdata">getRandomData</a></h3>
 <p>Get a pseudo-random selection of NFTs.</p>
-<pre><code class="language-solidity">function getRandomData(uint256 requestedNumber) public view returns (SettlementData[] memory results);
+<p><em>This function uses pseudo-randomness as it is only used to return a selection
+of NFTs for display purposes.
+This function could have been implemented offchain but the point of this view
+contract is to make interacting with the contracts easier for the front-end.</em></p>
+<pre><code class="language-solidity">function getRandomData(uint256 requestedNumber) external view returns (SettlementData[] memory results);
 </code></pre>
 <p><strong>Parameters</strong></p>
 <div class="table-wrapper"><table><thead><tr><th>Name</th><th>Type</th><th>Description</th></tr></thead><tbody>
