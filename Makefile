@@ -68,19 +68,34 @@ base-mainnet-network:
 	)
 
 # ================================================================
-# │                      TESTING AND COVERAGE                    │
+# │                    LOCAL TESTING AND COVERAGE                │
 # ================================================================
-test:; forge test --fork-url ${FORK_RPC_URL}
-test-v:; forge test --fork-url ${FORK_RPC_URL} -vvvv
-test-summary:; forge test --fork-url ${FORK_RPC_URL} --summary
+test:; forge test
+test-v:; forge test -vvvv
+test-summary:; forge test --summary
 
 coverage:
-	@forge coverage --fork-url ${FORK_RPC_URL} --report summary --report lcov 
+	@forge coverage --report summary --report lcov 
 	@echo
 
 coverage-report:
-	@forge coverage --fork-url ${FORK_RPC_URL} --report debug > coverage-report.txt
+	@forge coverage --report debug > coverage-report.txt
 	@echo Output saved to coverage-report.txt
+
+# ================================================================
+# │                     FORK TESTING AND COVERAGE                │
+# ================================================================
+test-fork:; forge test --fork-url ${FORK_RPC_URL}
+test-v-fork:; forge test --fork-url ${FORK_RPC_URL} -vvvv
+test-summary-fork:; forge test --fork-url ${FORK_RPC_URL} --summary
+
+coverage-fork:
+	@forge coverage --fork-url ${FORK_RPC_URL} --report summary --report lcov 
+	@echo
+
+coverage-report-fork:
+	@forge coverage --fork-url ${FORK_RPC_URL} --report debug > coverage-report-fork.txt
+	@echo Output saved to coverage-report-fork.txt
 
 # ================================================================
 # │                   USER INPUT - ASK FOR VALUE                 │
