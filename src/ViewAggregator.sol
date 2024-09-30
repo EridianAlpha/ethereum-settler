@@ -66,9 +66,13 @@ contract ViewAggregator {
     }
 
     /// @notice Get a pseudo-random selection of NFTs.
+    /// @dev This function uses pseudo-randomness as it is only used to return a selection
+    ///      of NFTs for display purposes.
+    ///      This function could have been implemented offchain but the point of this view
+    ///      contract is to make interacting with the contracts easier for the front-end.
     /// @param requestedNumber The number of NFTs to return.
     /// @return results The array of SettlementData structs for the random NFTs.
-    function getRandomData(uint256 requestedNumber) public view returns (SettlementData[] memory results) {
+    function getRandomData(uint256 requestedNumber) external view returns (SettlementData[] memory results) {
         uint256 totalIds = SETTLEMENT_NFT.nextTokenId() - 1;
         if (requestedNumber >= totalIds) {
             return getSequentialData(1, totalIds);
