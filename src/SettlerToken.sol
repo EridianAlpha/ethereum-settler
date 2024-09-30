@@ -46,7 +46,7 @@ contract SettlerToken is ERC20, ERC20Permit {
     // ================================================================
 
     /// @notice Mint outstanding tokens for an account based on the Settler NFT held by that account.
-    /// @dev Useful when NFT is transferred as this function can be called before the NFT is transferred,
+    /// @dev Useful when an NFT is transferred as this function can be called before the NFT is transferred,
     //       so that the previous owner receives all their outstanding tokens.
     //       It can also be called at any time by anyone,
     //       but that does not make any difference to the balance calculations.

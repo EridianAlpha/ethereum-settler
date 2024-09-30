@@ -134,6 +134,9 @@ contract SettlementNft is ERC721 {
         return string(abi.encodePacked("data:application/json;base64,", json));
     }
 
+    /// @notice Generates the attributes for the NFT used in the tokenURI.
+    /// @param tokenId The ID of the NFT.
+    /// @return attributes The attributes for the NFT.
     function _generateAttributes(uint256 tokenId) internal view returns (string memory attributes) {
         uint256 mintTimestamp = s_mintTimestamp[tokenId];
 
