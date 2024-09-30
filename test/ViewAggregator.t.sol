@@ -28,6 +28,9 @@ contract ViewAggregatorTests is SettlerTestSetup {
         assertEq(results[1].owner, user2);
     }
 
+    // To test the duplicate logic branch, this test mints 1000 NFTs and then calls the getRandomData function
+    // which is likely to cause a duplicate to be picked and discarded.
+    // But there is a small change that a duplicate is not picked and the coverage check fails.
     function test_GetRandomData() public {
         uint256 startingId = 1;
         uint256 endingId = 1000;

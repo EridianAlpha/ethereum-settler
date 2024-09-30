@@ -75,6 +75,8 @@ contract NftTests is SettlerTestSetup {
         assertEq(settlementNft.balanceOf(user2), 1);
     }
 
+    // This test doesn't have a pass/fail condition, it's just to check the tokenURI generation logic.
+    // The output can be viewed in the console.
     function test_tokenUriGeneration() public {
         vm.broadcast(user1);
         settlementNft.mint();
