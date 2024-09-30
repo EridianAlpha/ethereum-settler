@@ -28,4 +28,4 @@ runs = 128
 depth = 128
 fail_on_revert = true
 
-# See more config options https://github.com/foundry-rs/foundry/tree/master/crates/config
+# See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
